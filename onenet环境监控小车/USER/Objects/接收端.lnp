@@ -1,0 +1,28 @@
+--cpu Cortex-M3
+".\objects\main.o"
+".\objects\system_stm32f10x.o"
+".\objects\stm32f10x_it.o"
+".\objects\core_cm3.o"
+".\objects\startup_stm32f10x_hd.o"
+".\objects\misc.o"
+".\objects\stm32f10x_exti.o"
+".\objects\stm32f10x_gpio.o"
+".\objects\stm32f10x_rcc.o"
+".\objects\stm32f10x_tim.o"
+".\objects\stm32f10x_usart.o"
+".\objects\dht11.o"
+".\objects\car.o"
+".\objects\oled_iic.o"
+".\objects\fire.o"
+".\objects\led.o"
+".\objects\delay.o"
+".\objects\sys.o"
+".\objects\usart.o"
+".\objects\esp8266.o"
+".\objects\edpkit.o"
+".\objects\onenet.o"
+".\objects\tim.o"
+--library_type=microlib --strict --scatter ".\Objects\接收端.sct"
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\Listings\接收端.map" -o .\Objects\接收端.axf
