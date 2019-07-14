@@ -1,0 +1,134 @@
+/*******************************************************************************
+ ************************* QQ858860583 *****************************************
+ ************************* 正点原子论坛号：cornrn ******************************	
+ *******************************************************************************/
+ /* includes ------------------------------------------------------------*/
+#include "delay.h"
+#include "LCD5110.h"
+#include "stm32f10x_flash.h"
+/* Private typedef -----------------------------------------------------------*/
+typedef enum {FAILED = 0, PASSED = !FAILED} TestStatus;
+/* Private functions ---------------------------------------------------------*/
+void RCC_Configuration(void);
+
+/*******************************************************************************
+* Function Name  : main
+* Description    : Main program
+* Input          : None	
+* Output         : None
+* Return         : None
+*******************************************************************************/
+int main(void)
+{
+    #ifdef DEBUG
+	        debug();
+    #endif
+	
+	 /* System clocks configuration ---------------------------------------------*/
+  	RCC_Configuration();
+	 /* GPIO configuration ------------------------------------------------------*/
+	  GPIO_Configuration();
+	 //NVIC_Configuration();
+    delay_init()	;
+    #if USESPI
+        SPI2_Config();
+	      DMA_SPI_Config();
+    #endif
+    GPIO_SetBits(GPIOB, GPIO_Pin_9);
+	
+	LCD_VCC_H();
+	LCD_GND_L();
+	LCD_BGL_H();
+	delay_ms(10); //等待         
+	LCD_Init(); //初始化液晶
+	LCD_Clear();
+	
+	LCD_Write_EnStr(0,0,"**************");
+	LCD_Write_EnStr(0,1,"gu dong dong");
+	LCD_Write_EnStr(0,2,"smart health");
+	LCD_Write_EnStr(0,3,"JiangsuZhihai");
+	LCD_Write_EnStr(0,4,"ElectronicTechnology");
+	LCD_Write_EnStr(0,5,"**************");
+
+	while(1)
+	{
+ //LCD_Write_ChStr(0, 0);
+		
+	}
+}
+
+
+
+/*******************************************************************************
+* Function Name  : RCC_Configuration
+* Description    : Configures the different system clocks.
+* Input          : None
+* Output         : None
+* Return         : None
+*******************************************************************************/
+void RCC_Configuration(void)
+{
+	ErrorStatus HSEStartUpStatus;
+	/* RCC system reset(for debug purpose) */
+	RCC_DeInit(); //复位RCC外部设备寄存器到默认值
+	/* Enable HSE */
+	RCC_HSEConfig(RCC_HSE_ON);
+	/* Wait till HSE is ready */
+	HSEStartUpStatus = RCC_WaitForHSEStartUp();
+	if(HSEStartUpStatus == SUCCESS)
+	{
+		/* Enable Prefetch Buffer */
+		FLASH_PrefetchBufferCmd(FLASH_PrefetchBuffer_Enable);
+		/* Flash 2 wait state */
+		FLASH_SetLatency(FLASH_Latency_2);	
+		/* HCLK = SYSCLK */
+		RCC_HCLKConfig(RCC_SYSCLK_Div1);	
+		/* PCLK2 = HCLK/2 */
+		RCC_PCLK2Config(RCC_HCLK_Div2);	
+		/* PCLK1 = HCLK/2 */
+		RCC_PCLK1Config(RCC_HCLK_Div2);	
+		/* PLLCLK = 8MHz * 9 = 72 MHz */
+		RCC_PLLConfig(RCC_PLLSource_HSE_Div1, RCC_PLLMul_9);	
+		/* Enable PLL */
+		RCC_PLLCmd(ENABLE);	
+		/* Wait till PLL is ready */
+		while(RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET)
+		{
+		}		
+		/* Select PLL as system clock source */
+		RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);		
+		/* Wait till PLL is used as system clock source */
+		while(RCC_GetSYSCLKSource() != 0x08)
+		{
+		}
+	}
+	/* Enable peripheral clocks --------------------------------------------------*/
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB | RCC_APB2Periph_AFIO, ENABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, ENABLE);
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1 , ENABLE);
+}
+
+ 
+
+#ifdef  DEBUG
+/*******************************************************************************
+* Function Name  : assert_failed
+* Description    : Reports the name of the source file and the source line number
+*                  where the assert_param error has occurred.
+* Input          : - file: pointer to the source file name
+*                  - line: assert_param error line source number
+* Output         : None
+* Return         : None
+*******************************************************************************/
+void assert_failed(u8* file, u32 line)
+{
+/* User can add his own implementation to report the file name and line number,
+ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+	
+	/* Infinite loop */
+	while (1)
+	{
+	}
+}
+#endif
+/******************* (C) COPYRIGHT 2007 STMicroelectronics *****END OF FILE****/

@@ -1,0 +1,21 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Project:</h2>
+D:\nokia5110\STM32驱动 诺基亚5110液晶 全套资料和源程序  SPI+DMA 方式驱动 第一版（只能显示英文）\NOKIA_LCD5110_STM32\USER\Template.uvproj
+Project File Date:  12/20/2017
+
+<h2>Output:</h2>
+Build target 'Template'
+compiling main.c...
+compiling LCD5110.c...
+linking...
+Program Size: Code=8334 RO-data=1202 RW-data=52 ZI-data=2380  
+FromELF: creating hex file...
+"..\OBJ\Template.axf" - 0 Error(s), 0 Warning(s).
+Build target 'Template'
+linking...
+Program Size: Code=8334 RO-data=1202 RW-data=52 ZI-data=2380  
+FromELF: creating hex file...
+"..\OBJ\Template.axf" - 0 Error(s), 0 Warning(s).
